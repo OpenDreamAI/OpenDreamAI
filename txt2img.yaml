@@ -1,0 +1,115 @@
+openapi: "3.0.0"
+info:
+  title: img2txt API
+  version: "1.0.0"
+paths:
+  /img2txt:
+    post:
+      summary: Convert image to text using specified parameters
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  description: the prompt to render
+                  default: "a painting of a virus monster playing guitar"
+                outdir:
+                  type: string
+                  description: dir to write results to
+                  default: "outputs/txt2img-samples"
+                skip_grid:
+                  type: boolean
+                  description: do not save a grid, only individual samples
+                  default: false
+                skip_save:
+                  type: boolean
+                  description: do not save individual samples
+                  default: false
+                ddim_steps:
+                  type: integer
+                  description: number of ddim sampling steps
+                  default: 50
+                plms:
+                  type: boolean
+                  description: use plms sampling
+                  default: false
+                dpm_solver:
+                  type: boolean
+                  description: use dpm_solver sampling
+                  default: false
+                laion400m:
+                  type: boolean
+                  description: uses the LAION400M model
+                  default: false
+                fixed_code:
+                  type: boolean
+                  description: if enabled, uses the same starting code across samples
+                  default: false
+                ddim_eta:
+                  type: number
+                  description: ddim eta (eta=0.0 corresponds to deterministic sampling)
+                  default: 0.0
+                n_iter:
+                  type: integer
+                  description: sample this often
+                  default: 2
+                H:
+                  type: integer
+                  description: image height, in pixel space
+                  default: 512
+                W:
+                  type: integer
+                  description: image width, in pixel space
+                  default: 512
+                C:
+                  type: integer
+                  description: latent channels
+                  default: 4
+                f:
+                  type: integer
+                  description: downsampling factor
+                  default: 8
+                n_samples:
+                  type: integer
+                  description: how many samples to produce for each given prompt. A.k.a. batch size
+                  default: 3
+                n_rows:
+                  type: integer
+                  description: rows in the grid (default: n_samples)
+                  default: 0
+                scale:
+                  type: number
+                  description: unconditional guidance scale: eps = eps(x, empty) + scale * (eps(x, cond) - eps(x, empty))
+                  default: 7.5
+                from-file:
+                  type: string
+                  description: if specified, load prompts from this file
+                config:
+                  type: string
+                  description: path to config which constructs model
+                  default: "configs/stable-diffusion/v1-inference.yaml"
+                ckpt:
+                  type: string
+                  description: path to checkpoint of model
+                  default: "models/ldm/stable-diffusion-v1/model.ckpt"
+                seed:
+                  type: integer
+                  description: the seed (for reproducible sampling)
+                  default: 42
+                precision:
+                  type: string
+                  description: evaluate at this precision
+                  enum:
+                    - full
+                    - autocast
+                  default: autocast
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
