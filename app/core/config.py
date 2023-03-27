@@ -30,7 +30,7 @@ class Settings:
         PROJECT_NAME (str): The name of the project.
         SERVER_NAME (str): The name of the server.
         OUTPUT_FOLDER (str): The name of the folder to store output files.
-        GENERATION_TAG (str): A tag for text-to-image operations.
+        IMAGE_GENERATION_TAG (str): A tag for text-to-image operations.
         OPENAPI_TAGS (list): A list of tags for OpenAPI operations.
     """
 
@@ -39,12 +39,12 @@ class Settings:
     PROJECT_NAME = "Open Dream AI"
     SERVER_NAME = "open-dream-ai"
     OUTPUT_FOLDER = "output"
-    GENERATION_TAG = "Text to images"
+    IMAGE_GENERATION_TAG = "Image generation"
     IMAGE_TAG = "Image retrival"
     HEALTH_CHECK = "Health check"
     OPENAPI_TAGS = [
         {
-            "name": GENERATION_TAG,
+            "name": IMAGE_GENERATION_TAG,
             "description": "Operations with image generation.",
         }
     ]

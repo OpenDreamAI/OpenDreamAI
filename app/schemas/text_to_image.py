@@ -68,7 +68,9 @@ class TextToImageRequest(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "prompt": ["a professional photograph of an astronaut riding a triceratops"],
+                "prompt": [
+                    "a professional photograph of an astronaut riding a triceratops"
+                ],
                 "steps": 50,
                 "height": 512,
                 "width": 512,

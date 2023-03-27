@@ -1,17 +1,15 @@
 import os.path
-from fastapi import HTTPException
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import FileResponse
-from fastapi import status
 
 from app.core.config import settings
 
 router = APIRouter()
+
+
 @router.get("")
-async def get_image(
-        filename: str
-):
+async def get_image(filename: str):
     """
     A FastAPI router method that retrieves an image file from disk and returns it as a response.
 
@@ -24,6 +22,7 @@ async def get_image(
     Raises:
         404 Not Found if the filename was not found.
     """
+    os.makedirs(settings.OUTPUT_FOLDER, exist_ok=True)
     files = os.listdir(settings.OUTPUT_FOLDER)
     if filename not in files:
         raise HTTPException(status.HTTP_404_NOT_FOUND)

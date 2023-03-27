@@ -4,7 +4,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.context import get_text_to_image_service
 from app.core.config import settings
-from app.schemas.text_to_image import TextToImageRequest, ImagesResponse
+from app.schemas.text_to_image import ImagesResponse, TextToImageRequest
 from app.services.text_to_image import TextToImageService
 
 router = APIRouter()
@@ -29,7 +29,8 @@ async def text_to_image(
         A TextToImageResponse object containing a list of filenames and an information message.
     """
     filenames = [
-        service.generate_ulid_filename() for _ in range(len(params.prompt) * params.num_images_per_prompt)
+        service.generate_ulid_filename()
+        for _ in range(len(params.prompt) * params.num_images_per_prompt)
     ]
     filepath = [
         os.path.join(settings.OUTPUT_FOLDER, filename) for filename in filenames
