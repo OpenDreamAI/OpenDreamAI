@@ -20,6 +20,10 @@ To install the Open Dream AI platform, follow these steps:
 
 ## Usage
 
+Swagger can be found at `http://localhost:8000/docs/open-dream-ai`
+
+REST API documentation can be found at `http://localhost:8000/redoc/open-dream-ai`
+
 To generate images from text prompts using the Open Dream AI platform, follow these steps:
 
 1. Send a POST request to the `v1/open-dream-ai/txt2img/` endpoint with a JSON payload containing the text prompt and other configuration options.
