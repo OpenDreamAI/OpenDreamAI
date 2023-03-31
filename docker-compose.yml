@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    image: open-dream-ai:latest
+    container_name: open-dream-ai
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./output:/app/output

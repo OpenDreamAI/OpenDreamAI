@@ -1,11 +1,11 @@
-fastapi
-uvicorn
-diffusers
-transformers
-accelerate
-scipy
-safetensors
-python-dotenv
-python-ulid
-pytorch-lightning
-python-multipart
+fastapi==0.95.0  # FastAPI framework, high performance, easy to learn, fast to code, ready for production
+uvicorn==0.21.1  # The lightning-fast ASGI server.
+diffusers==0.14.0  # Allows usage and customization of  StableDiffusion pipelines
+transformers==4.27.3  # State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow
+accelerate==0.18.0  # Package to run pytorch training on any kind of device
+scipy==1.10.1 # Fundamental algorithms for scientific computing in Python
+safetensors==0.3.0  # Fast and Safe Tensor serialization
+python-dotenv==1.0.0  # Read key-value pairs from a .env file and set them as environment variables
+python-ulid==1.1.0  # Universally Unique Lexicographically Sortable Identifier
+pytorch-lightning==2.0.0  # PyTorch Lightning is the lightweight PyTorch wrapper for ML researchers
+python-multipart==0.0.6  # A streaming multipart parser for Python

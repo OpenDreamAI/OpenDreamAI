@@ -1,14 +1,16 @@
-from typing import List, Optional
+from typing import Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import Field, validator
+
+from app.schemas.base import BaseRequestModel
 
 
-class TextToImageRequest(BaseModel):
+class TextToImageRequest(BaseRequestModel):
     """
     Pydantic model for generating images from text using StableDiffusion.
 
     Attributes:
-        prompt (List[str]): The prompts to render.
+        prompt (list[str]): The prompts to render.
         num_inference_steps (int, optional): The number of ddim sampling steps. Default value is 50.
         height (int, optional): The image height in pixel space. Default value is 512.
         width (int, optional): The image width in pixel space. Default value is 512.
@@ -27,10 +29,6 @@ class TextToImageRequest(BaseModel):
         includes default values for some parameters and constraints on the allowed values of others.
     """
 
-    prompt: List[str] = Field(
-        [],
-        description="the prompt to render",
-    )
     num_inference_steps: Optional[int] = Field(
         50, description="number of ddim sampling steps", ge=1, le=150, alias="steps"
     )
@@ -46,12 +44,6 @@ class TextToImageRequest(BaseModel):
         ge=8,
         le=768,
     )
-    num_images_per_prompt: Optional[int] = Field(
-        1,
-        description="how many samples to produce for each given prompt. A.k.a batch size",
-        ge=1,
-        le=10,
-    )
     guidance_scale: Optional[float] = Field(
         7.5,
         description="unconditional guidance scale: eps = eps(x, empty) + scale * (eps(x, cond) - eps(x, empty))",
@@ -61,11 +53,12 @@ class TextToImageRequest(BaseModel):
     eta: Optional[float] = Field(
         None, description="ddim eta (eta=0.0 corresponds to deterministic sampling"
     )
-    seed: Optional[int] = Field(
-        None, description="the seed (for reproducible sampling)"
-    )
 
     class Config:
+        """
+        Configuration class for pydantic model.
+        """
+
         schema_extra = {
             "example": {
                 "prompt": [
@@ -76,18 +69,40 @@ class TextToImageRequest(BaseModel):
                 "width": 512,
                 "num_images_per_prompt": 1,
                 "guidance_scale": 7.5,
+                "eta": None,
+                "seed": None,
             }
         }
-        exclude = {"eta", "seed"}
 
     @validator("height", "width", pre=True)
-    def check_dimensions(cls, v):
-        if v % 8 != 0:
+    def check_dimensions(cls, value):
+        """
+        Validator to check correctness of height and width attributes.
+
+        Parameters:
+            value: height or width value
+
+        Returns:
+            Value if it's correct
+        """
+        if value % 8 != 0:
             raise ValueError("Dimensions must be divisible by 8.")
-        return v
+        return value
 
     @validator("prompt", pre=False)
     def check_prompts(cls, prompts):
+        """
+        Validator to check correctness of prompts.
+
+        Parameters:
+            prompts: list of prompts
+
+        Returns:
+            Value if it's correct
+
+        Raises:
+            ValueError if the list of prompts has incorrect values
+        """
         if not prompts:
             raise ValueError("Prompts cannot be empty.")
         for prompt in prompts:
@@ -95,21 +110,3 @@ class TextToImageRequest(BaseModel):
                 raise ValueError("Prompts cannot be empty.")
 
         return prompts
-
-
-class ImagesResponse(BaseModel):
-    """
-    Pydantic model for the response returned by the image generation API.
-
-    Attributes:
-        images (List[str]): A list of image filenames generated from the input prompt.
-        info (str): A message providing information about the generation process.
-
-    Notes:
-        This Pydantic model is used to represent the response returned by image generation API.
-        It contains a list of filenames for the generated images and a message providing information about
-        generation process.
-    """
-
-    images: List[str]
-    info: str

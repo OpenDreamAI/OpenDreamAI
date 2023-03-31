@@ -1,6 +1,5 @@
 import enum
 import os
-import string
 
 import dotenv
 
@@ -26,16 +25,20 @@ class Settings:
 
     Attributes:
         DEVICE (DeviceConfig): The device configuration for running the model.
-        STABLE_DIFFUSION_MODEL_ID (str): The ID of the deep learning model to use.
+        TXT2IMG_MODEL (str): The ID of the txt2img model to use.
+        DEPTH2IMG_MODEL (str): The ID of the depth2img model to use.
+        INPAINT_MODEL (str): The ID of the inpaint model to use.
         PROJECT_NAME (str): The name of the project.
         SERVER_NAME (str): The name of the server.
         OUTPUT_FOLDER (str): The name of the folder to store output files.
-        IMAGE_GENERATION_TAG (str): A tag for text-to-image operations.
+        IMAGE_GENERATION_TAG (str): A tag for image generation operations.
         OPENAPI_TAGS (list): A list of tags for OpenAPI operations.
     """
 
     DEVICE = DeviceConfig(os.getenv("DEVICE", "cpu"))
-    STABLE_DIFFUSION_MODEL_ID = "stabilityai/stable-diffusion-2-1"
+    TXT2IMG_MODEL = "stabilityai/stable-diffusion-2-1"
+    DEPTH2IMG_MODEL = "stabilityai/stable-diffusion-2-depth"
+    INPAINT_MODEL = "stabilityai/stable-diffusion-2-inpainting"
     PROJECT_NAME = "Open Dream AI"
     SERVER_NAME = "open-dream-ai"
     OUTPUT_FOLDER = "output"
@@ -46,7 +49,11 @@ class Settings:
         {
             "name": IMAGE_GENERATION_TAG,
             "description": "Operations with image generation.",
-        }
+        },
+        {
+            "name": IMAGE_TAG,
+            "description": "Operations with generated images.",
+        },
     ]
 
 

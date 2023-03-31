@@ -1,10 +1,8 @@
-import diffusers
 from fastapi import FastAPI
 
+from app import patch as _  # noqa
 from app.core.config import settings
 from app.routers import api_router
-
-diffusers.logging.set_verbosity_error()
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
