@@ -4,7 +4,7 @@ router = APIRouter()
 
 
 @router.get("/")
-async def health_check():
+async def get_health_check():
     """
     Healthcheck endpoint to check if the service is alive.
     """

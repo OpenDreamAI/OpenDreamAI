@@ -1,9 +1,6 @@
 from diffusers import StableDiffusionPipeline
-from PIL.Image import Image
-from pytorch_lightning import seed_everything
 
-from app.core.pipelines import InitializePipeline
-from app.schemas.text_to_image import TextToImageRequest
+from app.core.config import settings
 from app.services.base import BaseService
 
 
@@ -18,35 +15,21 @@ class TextToImageService(BaseService):
         `BaseService` class to reuse its methods for generating unique filenames and saving images to disk.
     """
 
-    pipeline: StableDiffusionPipeline = InitializePipeline.text_to_image()
+    initial_step = 1
 
-    def text_to_image(self, params: TextToImageRequest, filepaths: list[str]) -> None:
+    @classmethod
+    def initialize_pipeline(cls) -> StableDiffusionPipeline:
         """
-        Generates images from the input text using the StableDiffusion pipeline and saves them to disk.
-
-        This method generates a set of images from the input text using the StableDiffusion pipeline, and saves them
-        to the specified filepaths using the `save_images` method inherited from the `BaseService` class.
-
-        Parameters:
-            params (TextToImageRequest): A Pydantic model containing the configuration for the image generation pipeline.
-            filepaths (list): A list of filepaths where the generated images should be saved.
-        """
-        images = self.generate_images(params=params)
-        self.save_images(filepaths=filepaths, images=images)
-
-    def generate_images(self, params: TextToImageRequest) -> list[Image]:
-        """
-        Generates a set of images from the input text using the StableDiffusion pipeline.
-
-        This method generates a set of images from the input text using the StableDiffusion pipeline, and returns
-        them as a list of PIL `Image` objects.
-
-        Parameters:
-            params (TextToImageRequest): A Pydantic model containing the configuration for the image generation pipeline.
+        Initializes a StableDiffusionPipeline object from a pretrained model,
+        sets the device configuration, and returns the initialized pipeline.
 
         Returns:
-            list: A list of PIL `Image` objects generated from the input text.
-
+            A StableDiffusionPipeline object initialized with the given model ID and a DPMSolverMultistepScheduler
+            as its scheduler.
         """
-        seed_everything(seed=params.seed)
-        return self.pipeline(**params.dict(exclude_none=True, exclude={"seed"})).images
+        pipeline = StableDiffusionPipeline.from_pretrained(settings.TXT2IMG_MODEL)
+        pipeline = pipeline.to(settings.DEVICE.value)
+        return pipeline
+
+
+text_to_image_service = TextToImageService()
