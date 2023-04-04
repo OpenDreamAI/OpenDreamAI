@@ -1,0 +1,31 @@
+name: Docker build and push
+
+on:
+  push:
+    branches:
+      - main
+
+
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t open-dream-ai .
+
+      - name: Tag Docker image
+        run: docker tag open-dream-ai $DOCKERHUB_USERNAME/open-dream-ai:latest
+
+      - name: Push Docker image
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - run: docker push $DOCKERHUB_USERNAME/open-dream-ai:latest

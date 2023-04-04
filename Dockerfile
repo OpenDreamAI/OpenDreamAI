@@ -1,5 +1,5 @@
-# Use the official Python 3.10 image as a base
-FROM python:3.9
+# Use the official Python 3.11 image as a base
+FROM python:3.11
 
 # Set the working directory
 WORKDIR /app

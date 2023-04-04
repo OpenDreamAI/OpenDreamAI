@@ -29,8 +29,16 @@ REST API documentation can be found at `http://localhost:8000/redoc/open-dream-a
 
 ### Text to Image
 
-![sunset_over_lake.png](doc_images%2Fsunset_over_lake.png)![floor_paving2.png](doc_images%2Ffloor_paving.png)
-![sand.png](doc_images%2Fsand.png)![village.png](doc_images%2Fvillage.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+    <img src="doc_images/sunset_over_lake.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/floor_paving.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+  <div style="display: flex; margin-top: -10px;">
+    <img src="doc_images/sand.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/village.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To generate images from text prompts using the Open Dream AI platform, follow these steps:
 
@@ -70,7 +78,12 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Image to Image
 
-![dog_on_a_bench.png](doc_images%2Fdog_on_a_bench.png)![img2img_dog.png](doc_images%2Fimg2img_dog.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+  <img src="doc_images/dog_on_a_bench.png" style="height:256px; width:256px; margin-right: 10px;">
+  <img src="doc_images/img2img_dog.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To generate images from an image using the Open Dream AI platform, follow these steps:
 
@@ -95,7 +108,6 @@ curl -X 'POST' \
   -F 'strength=0.7'
 ```
 
-
 This will generate an image and return a response like the following:
 
 ```json
@@ -112,8 +124,16 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Inpaint
 
-![dog_on_a_bench.png](doc_images%2Fdog_on_a_bench.png)![inpaint_mask.png](doc_images%2Finpaint_mask.png)
-![inpaint_empty_bench.png](doc_images%2Finpaint_empty_bench.png)![inpaint_giant_bee.png](doc_images%2Finpaint_giant_bee.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+    <img src="doc_images/dog_on_a_bench.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/inpaint_mask.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+  <div style="display: flex; margin-top: -10px;">
+    <img src="doc_images/inpaint_empty_bench.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/inpaint_giant_bee.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To inpaint image using the Open Dream AI platform, follow these steps:
 
@@ -154,7 +174,12 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Depth to Image
 
-![barack_obama.jpg](doc_images%2Fbarack_obama.jpg)![old_man_obama.png](doc_images%2Fold_man_obama.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+  <img src="doc_images/barack_obama.jpg" style="height:256px; width:256px; margin-right: 10px;">
+  <img src="doc_images/old_man_obama.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To generate image from image with the depth info using Open Dream AI platform, follow these steps:
 
@@ -195,7 +220,8 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Get Image
 
-To get generated image by filename, send a GET request to the `v1/open-dream-ai/image/progress` endpoint with the filename
+To get generated image by filename, send a GET request to the `v1/open-dream-ai/image/progress` endpoint with the
+filename
 parameter containing image filename that you got from other endpoints.
 
 For example:
@@ -227,8 +253,7 @@ We welcome contributions to the Open Dream AI platform! To contribute, follow th
 4. Push your feature branch to your fork of the repository.
 5. Submit a pull request from your feature branch to the `main` branch of this repository.
 
-Please make sure that your changes follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide and include
-appropriate unit tests.
+Please make sure that your changes follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide.
 
 ## License
 
