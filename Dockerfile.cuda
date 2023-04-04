@@ -1,0 +1,21 @@
+# Use the official pytorch latest image as a base
+FROM pytorch/pytorch:latest
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements.txt file into the container
+COPY requirements.txt .
+
+# Install the dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port the app will run on
+EXPOSE 80
+
+# Add uvicorn to requirements.txt if it's not there already
+# Run the FastAPI app using Uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
