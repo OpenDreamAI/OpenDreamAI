@@ -1,3 +1,4 @@
+# Use the official pytorch latest image as a base
 FROM pytorch/pytorch:latest
 
 # Set the working directory
