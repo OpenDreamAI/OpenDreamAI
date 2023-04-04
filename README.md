@@ -16,10 +16,21 @@ To install the Open Dream AI platform, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Install the required dependencies by running `pip install -r requirements.txt`.
-3. Configure the platform by editing the `app/core/config.py` file. The configuration file contains settings for the
+3. Configure the platform by creating a .env from .env.sample. The configuration file contains settings for the
    device to use (CPU or GPU), the project name, the server name, and the output folder to use for storing generated
    images.
 4. Start the API server by running `uvicorn app.main:app --reload`. This will start the API server on port 8000.
+
+## Using docker with cuda (nvidia)
+
+To use docker you should have docker installed in your system.
+
+1. Clone this repository to your local machine.
+2. Configure the platform by creating a .env from .env.sample. The configuration file contains settings for the
+   device to use (CPU or GPU), the project name, the server name, and the output folder to use for storing generated
+   images. (`DEVICE` should be set to cuda).
+3. Build the cuda docker image via `docker build -t open-dream-ai-cuda -f ./Dockerfile.cuda .`.
+4. Start the Docker image by running `docker run --gpus all -p 8000:80 open-dream-ai-cuda`. This will start the API server on port 8000.
 
 ## Usage
 
