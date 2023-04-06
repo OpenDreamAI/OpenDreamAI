@@ -233,6 +233,18 @@ If the generation process is not yet finished, you will receive a response that 
 
 If the generation is finished and the image is ready, it will be returned as a response instead.
 
+## Deploy to runpod
+
+Follow this steps to deploy the app to runpod.
+
+1. Login to [runpod.io](https://runpod.io)
+2. Under [Templates](https://www.runpod.io/console/templates) search for `Open Dream AI Cuda` and click deploy.
+3. Pick a GPU to deploy the template.
+4. In the left specify the Container disk(min 45GB) and the volume disk (min 10GB)
+5. Click on continue and wait for the image to get deployed.
+6. Click on the pod and Connect via http 80.
+7. You can now try the deployment via Swagger under `[thepodhost]/docs/open-dream-ai`
+
 ## Contributing
 
 We welcome contributions to the Open Dream AI platform! To contribute, follow these steps:
