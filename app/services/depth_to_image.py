@@ -29,10 +29,7 @@ class DepthToImageService(BaseService):
             specified device.
         """
         pipeline = StableDiffusionDepth2ImgPipeline.from_pretrained(
-            settings.DEPTH2IMG_MODEL,
+            settings.DEPTH2IMG_MODEL, torch_dtype=cls.get_torch_datatype()
         )
         pipeline = pipeline.to(settings.DEVICE.value)
         return pipeline
-
-
-depth_to_image_service = DepthToImageService()

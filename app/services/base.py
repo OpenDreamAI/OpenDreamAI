@@ -1,7 +1,11 @@
+import gc
 import os
+import random
 from abc import ABC, abstractmethod
 from typing import Callable
 
+import numpy as np
+import torch
 from PIL.Image import Image
 from pytorch_lightning import seed_everything
 from torch import FloatTensor
@@ -9,7 +13,6 @@ from ulid import ULID
 
 from app.core.config import settings
 from app.schemas.base import BaseRequestModel
-from app.services.image_retrieval import progress
 
 
 class BaseService(ABC):
@@ -25,6 +28,11 @@ class BaseService(ABC):
     def __init__(self):
         self.pipeline = self.initialize_pipeline()
 
+    def cleanup(self):
+        del self.pipeline
+        gc.collect()
+        torch.cuda.empty_cache()
+
     @property
     @abstractmethod
     def initial_step(self):
@@ -34,6 +42,16 @@ class BaseService(ABC):
     @abstractmethod
     def initialize_pipeline(cls):
         pass
+
+    @staticmethod
+    def get_torch_datatype():
+        """
+        Get torch datatype that corresponds to environment MIXED_PRECISION variable.
+        """
+        if settings.MIXED_PRECISION == "fp16":
+            return torch.float16
+        else:
+            return None
 
     @staticmethod
     def generate_ulid_filename() -> str:
@@ -128,31 +146,55 @@ class BaseService(ABC):
         def custom_callback(step: int, timestep: int, latents: FloatTensor) -> None:
             images_progress = (step + self.initial_step) / steps * 100
             for filename in filenames:
-                progress[filename] = images_progress
+                image_generation_progress[filename] = images_progress
 
         return custom_callback
 
     def generate_images(
         self, params: BaseRequestModel, filenames: list[str]
     ) -> list[Image]:
-        seed_everything(seed=params.seed)
+        """
+        Generate images
+
+        Parameters:
+            params: parameters to use to generate images
+            filenames: list of image filenames to monitor progress for
+
+        Returns:
+            List of generated images
+        """
+        seed_everything(
+            seed=params.seed
+            or random.randint(np.iinfo(np.uint32).min, np.iinfo(np.uint32).max)
+        )
+
         callback_function = self.create_callback(
             filenames=filenames, steps=params.total_steps
         )
-        return self.pipeline(
-            **params.dict(exclude_none=True, exclude={"seed", "total_steps"}),
-            callback=callback_function,
-        ).images
+        try:
+            if lora_weights := getattr(params, "lora_weights", None):
+                self.pipeline.unet.load_attn_procs(
+                    os.path.join(settings.LORA_FOLDER, lora_weights)
+                )
+            return self.pipeline(
+                **params.dict(
+                    exclude_none=True, exclude={"seed", "total_steps", "lora_weights"}
+                ),
+                callback=callback_function,
+            ).images
+        finally:
+            self.cleanup()
 
-    def initialize_images_progress(self, filenames: list[str]):
+    @staticmethod
+    def initialize_images_progress(filenames: list[str]) -> None:
         """
         Initializes progress for each filename as 0%.
 
         Parameters:
-             filenames:
+             filenames: list of filenames to add to the progress dict
         """
         for filename in filenames:
-            progress[filename] = 0
+            image_generation_progress[filename] = 0
 
     def process(self, params: BaseRequestModel, filenames: list[str]) -> None:
         """
@@ -168,4 +210,8 @@ class BaseService(ABC):
             self.save_images(filenames=filenames, images=images)
         finally:
             for filename in filenames:
-                progress.pop(filename, None)
+                image_generation_progress.pop(filename, None)
+
+
+image_generation_progress: dict[str, float] = {}
+lora_progress: dict[str, float] = {}

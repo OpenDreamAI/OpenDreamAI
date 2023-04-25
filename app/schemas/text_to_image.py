@@ -30,7 +30,7 @@ class TextToImageRequest(BaseRequestModel):
     """
 
     num_inference_steps: Optional[int] = Field(
-        50, description="number of ddim sampling steps", ge=1, le=150, alias="steps"
+        50, description="number of ddim sampling steps", ge=1, le=999, alias="steps"
     )
     height: Optional[int] = Field(
         512,
@@ -52,6 +52,9 @@ class TextToImageRequest(BaseRequestModel):
     )
     eta: Optional[float] = Field(
         None, description="ddim eta (eta=0.0 corresponds to deterministic sampling"
+    )
+    lora_weights: Optional[str] = Field(
+        None, description="ulid of lora weights to use during generation"
     )
 
     class Config:

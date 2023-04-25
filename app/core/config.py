@@ -36,24 +36,23 @@ class Settings:
     """
 
     DEVICE = DeviceConfig(os.getenv("DEVICE", "cpu"))
+    MIXED_PRECISION = os.getenv("MIXED_PRECISION", None)
     TXT2IMG_MODEL = "stabilityai/stable-diffusion-2-1"
     DEPTH2IMG_MODEL = "stabilityai/stable-diffusion-2-depth"
     INPAINT_MODEL = "stabilityai/stable-diffusion-2-inpainting"
     PROJECT_NAME = "Open Dream AI"
     SERVER_NAME = "open-dream-ai"
     OUTPUT_FOLDER = "output"
+    LORA_FOLDER = "lora"
     IMAGE_GENERATION_TAG = "Image generation"
-    IMAGE_TAG = "Image retrival"
+    LORA_TAG = "Lora fine-tuning"
     HEALTH_CHECK = "Health check"
     OPENAPI_TAGS = [
         {
             "name": IMAGE_GENERATION_TAG,
-            "description": "Operations with image generation.",
+            "description": "Operations with images.",
         },
-        {
-            "name": IMAGE_TAG,
-            "description": "Operations with generated images.",
-        },
+        {"name": LORA_TAG, "description": "Operations with LoRA fine-tuning."},
     ]
 
 

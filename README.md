@@ -16,19 +16,39 @@ To install the Open Dream AI platform, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Install the required dependencies by running `pip install -r requirements.txt`.
-3. Configure the platform by creating a .env from .env.sample. The configuration file contains settings for the
+3. Configure the platform by editing the `app/core/config.py` file. The configuration file contains settings for the
    device to use (CPU or GPU), the project name, the server name, and the output folder to use for storing generated
    images.
 4. Start the API server by running `uvicorn app.main:app --reload`. This will start the API server on port 8000.
 
-## Using docker with cuda (nvidia)
+## Run using Docker
 
-### Requirements
+### CPU
 
-1. Nvidia GPU with [NVIDIA driver](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html) installed.
+1. Clone this repository to your local machine.
+2. (Optional) Configure the platform by creating a .env from .env.sample. The configuration file contains settings for
+   the device to use (`DEVICE` should be set to cpu, `MIXED_PRECISION` should be set to empty value).
+3. Build and start the service using `docker compose -f docker-compose-cpu.yml up`
+
+### CUDA (nvidia)
+
+Requirements
+
+1. Nvidia GPU with [NVIDIA driver](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html)
+   installed.
 2. Install docker on your system.
 
-For instructions on getting started with the NVIDIA Container Toolkit, refer to the [installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker).
+For instructions on getting started with the NVIDIA Container Toolkit, refer to
+the [installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker).
+
+Docker-compose:
+
+1. Clone this repository to your local machine.
+2. Configure the platform by creating a .env from .env.sample. The configuration file contains settings for the
+   device to use (`DEVICE` should be set to cuda).
+3. Build and start the service using `docker compose -f docker-compose-cuda.yml up`
+
+OR use native Docker commands:
 
 1. Clone this repository to your local machine.
 2. Configure the platform by creating a .env from .env.sample. The configuration file contains settings for the
@@ -39,14 +59,22 @@ For instructions on getting started with the NVIDIA Container Toolkit, refer to 
 
 ## Usage
 
-Swagger can be found at `http://localhost:8000/docs/open-dream-ai`
+Swagger can be found at `http://127.0.0.1:8000/docs/open-dream-ai`
 
-REST API documentation can be found at `http://localhost:8000/redoc/open-dream-ai`
+REST API documentation can be found at `http://127.0.0.1:8000/redoc/open-dream-ai`
 
 ### Text to Image
 
-![sunset_over_lake.png](doc_images%2Fsunset_over_lake.png)![floor_paving2.png](doc_images%2Ffloor_paving.png)
-![sand.png](doc_images%2Fsand.png)![village.png](doc_images%2Fvillage.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+    <img src="doc_images/sunset_over_lake.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/floor_paving.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+  <div style="display: flex; margin-top: -10px;">
+    <img src="doc_images/sand.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/village.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To generate images from text prompts using the Open Dream AI platform, follow these steps:
 
@@ -86,7 +114,12 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Image to Image
 
-![dog_on_a_bench.png](doc_images%2Fdog_on_a_bench.png)![img2img_dog.png](doc_images%2Fimg2img_dog.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+  <img src="doc_images/dog_on_a_bench.png" style="height:256px; width:256px; margin-right: 10px;">
+  <img src="doc_images/img2img_dog.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To generate images from an image using the Open Dream AI platform, follow these steps:
 
@@ -111,7 +144,6 @@ curl -X 'POST' \
   -F 'strength=0.7'
 ```
 
-
 This will generate an image and return a response like the following:
 
 ```json
@@ -128,8 +160,16 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Inpaint
 
-![dog_on_a_bench.png](doc_images%2Fdog_on_a_bench.png)![inpaint_mask.png](doc_images%2Finpaint_mask.png)
-![inpaint_empty_bench.png](doc_images%2Finpaint_empty_bench.png)![inpaint_giant_bee.png](doc_images%2Finpaint_giant_bee.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+    <img src="doc_images/dog_on_a_bench.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/inpaint_mask.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+  <div style="display: flex; margin-top: -10px;">
+    <img src="doc_images/inpaint_empty_bench.png" style="height:256px; width:256px; margin-right: 10px;">
+    <img src="doc_images/inpaint_giant_bee.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To inpaint image using the Open Dream AI platform, follow these steps:
 
@@ -170,7 +210,12 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Depth to Image
 
-![barack_obama.jpg](doc_images%2Fbarack_obama.jpg)![old_man_obama.png](doc_images%2Fold_man_obama.png)
+<div style="display: flex; flex-direction: column; align-items: center">
+  <div style="display: flex;">
+  <img src="doc_images/barack_obama.jpg" style="height:256px; width:256px; margin-right: 10px;">
+  <img src="doc_images/old_man_obama.png" style="height:256px; width:256px; margin-left: -10px;">
+  </div>
+</div>
 
 To generate image from image with the depth info using Open Dream AI platform, follow these steps:
 
@@ -211,8 +256,8 @@ using this filename at the [Get Image](#get-image) endpoint.
 
 ### Get Image
 
-To get generated image by filename, send a GET request to the `v1/open-dream-ai/image/progress` endpoint with the filename
-parameter containing image filename that you got from other endpoints.
+To get generated image by filename, send a GET request to the `v1/open-dream-ai/image/` endpoint with the
+filename parameter containing image filename that you got from other endpoints.
 
 For example:
 
@@ -231,7 +276,112 @@ If the generation process is not yet finished, you will receive a response that 
 }
 ```
 
+### LoRA fine-tuning
+
+To fine-tune a model using LoRA, send a POST request to the `v1/open-dream-ai/lora` endpoint with
+JSON data that contains fine-tuning arguments.
+
+For example:
+
+```curl
+curl --location 'http://127.0.0.1:8000/v1/open-dream-ai/lora/' \
+--header 'Content-Type: application/json' \
+--data '{
+    "pretrained_model_name_or_path": "CompVis/stable-diffusion-v1-4",
+    "dataset_name": "lambdalabs/pokemon-blip-captions",
+    "resolution": 512,
+    "random_flip": true,
+    "train_batch_size": 1,
+    "num_train_epochs": 100,
+    "checkpointing_steps": 1000,
+    "learning_rate": 0.0001,
+    "lr_scheduler": "constant",
+    "lr_warmup_steps": 0,
+    "seed": 42
+}'
+```
+
+Response is the process name like following:
+
+```
+"2F01GX6WTWSVZ9SZX2CXAQFE7DCA"
+```
+
+You can use this process name to monitor fine-tuning progress using [Get progress](#get-lora-progress) endpoint
+Once the process is finished, you can use generated LoRA weights using the same process ID as
+the "lora_weights" parameter on image generation endpoints.
+
 If the generation is finished and the image is ready, it will be returned as a response instead.
+
+### Get LoRA Progress
+
+To get generated image by filename, send a GET request to the `v1/open-dream-ai/lora/progress` endpoint with the
+process_name parameter containing process name that you got from [LoRA fine-tuning](#lora-fine-tuning) endpoint.
+
+For example:
+
+```curl
+curl -X 'GET' \
+  'http://127.0.0.1:8000/v1/open-dream-ai/lora/progress?process_name=YOUR-PROCESS-NAME' \
+  -H 'accept: application/json'
+```
+
+If the generation process is not yet finished, you will receive a response that looks like this:
+
+```json
+{
+  "process_name": "01FEH7W9N9MH84QJN65F2C8Y26",
+  "progress": "34%"
+}
+```
+
+### List Images
+
+To get list of all generated images, send a GET request to the `v1/open-dream-ai/image/list` endpoint.
+
+For example:
+
+```curl
+curl -X 'GET' \
+  'http://127.0.0.1:8000/v1/open-dream-ai/image/list' \
+  -H 'accept: application/json'
+```
+
+Response:
+
+```json
+[
+  "01GYFAY3JWS2446491KG2DKZC8.png",
+  "01GYFAZFN2QTGV5XJK752Z3Q3A.png",
+  "01GYFC1APG5JQ50H0HSX9FZPEG.png",
+  "01GYFC1APGEQ7ECKDG2HGBCJN8.png",
+  "01GYFVDMV34E55DZEXQFPDDVQ7.png",
+  "01GYFXA7XQQ0W2A037HZ9PZJHS.png",
+  "01GYFXFB8GCB5FZHA0H1KABPV9.png"
+]
+```
+
+### List LoRA models
+
+To get list of all fine-tuned LoRA weights, send a GET request to the `v1/open-dream-ai/lora/lora_models` endpoint.
+
+For example:
+
+```curl
+curl -X 'GET' \
+  'http://127.0.0.1:8000/v1/open-dream-ai/lora/lora_models \
+  -H 'accept: application/json'
+```
+
+Response:
+
+```json
+[
+  "01GYFAY3JWS2446491KG2DKZC8",
+  "01GYFAZFN2QTGV5XJK752Z3Q3A",
+  "01GYFC1APG5JQ50H0HSX9FZPEG"
+]
+```
 
 ## Contributing
 
@@ -243,8 +393,7 @@ We welcome contributions to the Open Dream AI platform! To contribute, follow th
 4. Push your feature branch to your fork of the repository.
 5. Submit a pull request from your feature branch to the `main` branch of this repository.
 
-Please make sure that your changes follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide and include
-appropriate unit tests.
+Please make sure that your changes follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide.
 
 ## License
 

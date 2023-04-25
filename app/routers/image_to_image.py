@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from starlette.background import BackgroundTasks
 
 from app.schemas.image_to_image import ImageToImageRequest
-from app.services.image_to_image import image_to_image_service as service
+from app.services.image_to_image import ImageToImageService
 
 router = APIRouter()
 
@@ -24,6 +24,7 @@ async def generate_image_from_image(
     Response:
         A TextToImageResponse object containing a list of filenames and an information message.
     """
+    service: ImageToImageService = ImageToImageService()
     filenames = service.generate_filenames(params)
     background_tasks.add_task(service.process, params, filenames)
     return filenames

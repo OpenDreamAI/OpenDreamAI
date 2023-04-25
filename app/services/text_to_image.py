@@ -27,9 +27,8 @@ class TextToImageService(BaseService):
             A StableDiffusionPipeline object initialized with the given model ID and a DPMSolverMultistepScheduler
             as its scheduler.
         """
-        pipeline = StableDiffusionPipeline.from_pretrained(settings.TXT2IMG_MODEL)
+        pipeline = StableDiffusionPipeline.from_pretrained(
+            settings.TXT2IMG_MODEL, torch_dtype=cls.get_torch_datatype()
+        )
         pipeline = pipeline.to(settings.DEVICE.value)
         return pipeline
-
-
-text_to_image_service = TextToImageService()

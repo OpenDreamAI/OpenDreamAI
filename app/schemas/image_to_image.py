@@ -16,9 +16,9 @@ class ImageToImageRequest(BaseRequestModel):
         image (PIL.Image.Image): The image to process.
         num_images_per_prompt (int, optional): The number of output images to generate per prompt. Defaults to 1.
         num_inference_steps (int, optional): The number of DDIM sampling steps to use for the transformation.
-        Defaults to 50.
+            Defaults to 50.
         guidance_scale (float, optional): The unconditional guidance scale for the transformation.
-        Defaults to 7.5.
+            Defaults to 7.5.
         strength (float, optional): The strength of the transformation. Must be between 0 and 1. Defaults to 0.7.
         seed (int, optional): The seed (for reproducible sampling).
 
@@ -29,6 +29,7 @@ class ImageToImageRequest(BaseRequestModel):
     strength: Optional[float]
     image: Image
     _prepare_image = validator("image", allow_reuse=True, pre=True)(prepare_image)
+    lora_weights: Optional[str]
 
     @classmethod
     def as_form(
@@ -46,7 +47,7 @@ class ImageToImageRequest(BaseRequestModel):
             alias="number_of_images",
         ),
         num_inference_steps: Optional[int] = Form(
-            50, description="number of ddim sampling steps", ge=1, le=150, alias="steps"
+            50, description="number of ddim sampling steps", ge=1, le=999, alias="steps"
         ),
         guidance_scale: Optional[float] = Form(
             7.5,
@@ -66,6 +67,9 @@ class ImageToImageRequest(BaseRequestModel):
         seed: Optional[int] = Form(
             None, description="the seed (for reproducible sampling)"
         ),
+        lora_weights: Optional[str] = Form(
+            None, description="ulid of lora weights to use during generation"
+        ),
     ):
         return cls(
             image=image,
@@ -75,4 +79,5 @@ class ImageToImageRequest(BaseRequestModel):
             guidance_scale=guidance_scale,
             strength=strength,
             seed=seed,
+            lora_weights=lora_weights,
         )

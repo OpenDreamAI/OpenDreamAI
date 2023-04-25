@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.schemas.depth_to_image import DepthToImageRequest
-from app.services.depth_to_image import depth_to_image_service as service
+from app.services.depth_to_image import DepthToImageService
 
 router = APIRouter()
 
@@ -23,6 +23,7 @@ async def generate_depth_to_image(
     Response:
         An ImagesResponse object containing a list of filenames and an information message.
     """
+    service: DepthToImageService = DepthToImageService()
     filenames = service.generate_filenames(params)
     background_tasks.add_task(service.process, params, filenames)
 

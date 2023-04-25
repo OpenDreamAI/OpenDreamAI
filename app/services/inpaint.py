@@ -27,12 +27,8 @@ class InpaintService(BaseService):
             A StableDiffusionInpaintPipeline object initialized with the given model ID and configured for the
             specified device.
         """
-
         pipeline = StableDiffusionInpaintPipeline.from_pretrained(
-            settings.INPAINT_MODEL,
+            settings.INPAINT_MODEL, torch_dtype=cls.get_torch_datatype()
         )
         pipeline = pipeline.to(settings.DEVICE.value)
         return pipeline
-
-
-inpaint_service = InpaintService()

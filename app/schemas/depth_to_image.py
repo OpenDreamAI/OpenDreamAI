@@ -45,7 +45,7 @@ class DepthToImageRequest(BaseRequestModel):
             alias="number_of_images",
         ),
         num_inference_steps: Optional[int] = Form(
-            50, description="number of ddim sampling steps", ge=1, le=150, alias="steps"
+            50, description="number of ddim sampling steps", ge=1, le=999, alias="steps"
         ),
         guidance_scale: Optional[float] = Form(
             7.5,

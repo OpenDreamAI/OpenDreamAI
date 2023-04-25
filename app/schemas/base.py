@@ -9,6 +9,15 @@ from pydantic import BaseModel, Field, root_validator
 
 
 def prepare_image(image: UploadFile) -> Image:
+    """
+    Converts UploadFile object into Image ogject.
+
+    Parameters:
+        image: UploadFile object to convert
+
+    Returns:
+        Image object to use in pipelines
+    """
     contents = image.file.read()
     image: Image = image_open(BytesIO(contents)).convert("RGB")
     return image
@@ -44,12 +53,18 @@ class BaseRequestModel(BaseModel):
         exclude = {"total_steps"}
 
     @root_validator(pre=True)
-    def calculate_total_steps(cls, values):
+    def calculate_total_steps(cls, values: dict) -> dict:
+        """
+        Calculates total number of steps for callback function.
+        """
         values["total_steps"] = int(
-            values.get("strength", 1) * values.get("num_inference_steps", 1)
+            values.get("strength", 1)
+            * values.get("num_inference_steps", 1)
+            * values.get("steps", 1)
         )
         if values["total_steps"] < 1:
             raise HTTPException(
-                422, detail="(num_inference_steps * strength) should be greater than 1!"
+                422,
+                detail="(num_inference_steps * strength) should be greater or equal to 1!",
             )
         return values
