@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile.cuda
+      context: .
+    image: open-dream-ai:latest
+    container_name: open-dream-ai
+    ports:
+      - "8000:80"
+    volumes:
+      - ./output:/app/output
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

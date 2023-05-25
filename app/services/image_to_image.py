@@ -28,10 +28,7 @@ class ImageToImageService(BaseService):
             specified device.
         """
         pipeline = StableDiffusionImg2ImgPipeline.from_pretrained(
-            settings.TXT2IMG_MODEL
+            settings.TXT2IMG_MODEL, torch_dtype=cls.get_torch_datatype()
         )
         pipeline = pipeline.to(settings.DEVICE.value)
         return pipeline
-
-
-image_to_image_service = ImageToImageService()

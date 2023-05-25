@@ -1,6 +1,6 @@
 fastapi==0.95.0  # FastAPI framework, high performance, easy to learn, fast to code, ready for production
 uvicorn==0.21.1  # The lightning-fast ASGI server.
-diffusers==0.14.0  # Allows usage and customization of  StableDiffusion pipelines
+diffusers==0.14.0  # Allows usage and customization of StableDiffusion pipelines
 transformers==4.27.3  # State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow
 accelerate==0.18.0  # Package to run pytorch training on any kind of device
 scipy==1.10.1 # Fundamental algorithms for scientific computing in Python
@@ -9,3 +9,7 @@ python-dotenv==1.0.0  # Read key-value pairs from a .env file and set them as en
 python-ulid==1.1.0  # Universally Unique Lexicographically Sortable Identifier
 pytorch-lightning==2.0.0  # PyTorch Lightning is the lightweight PyTorch wrapper for ML researchers
 python-multipart==0.0.6  # A streaming multipart parser for Python
+datasets==2.11.0  # HuggingFace community-driven open-source library of datasets
+ftfy== 6.1.1  # Fixes mojibake and other problems with Unicode
+tensorboard==2.12.1  # Library for visualizing and monitoring TensorFlow processes
+torchvision==0.15.1  # Image and video datasets and models for torch deep learning

@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile.cpu
+      context: .
+    image: open-dream-ai:latest
+    container_name: open-dream-ai
+    ports:
+      - "8000:80"
+    volumes:
+      - ./output:/app/output

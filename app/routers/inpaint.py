@@ -1,7 +1,7 @@
 from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.schemas.inpaint import InpaintRequest
-from app.services.inpaint import inpaint_service as service
+from app.services.inpaint import InpaintService
 
 router = APIRouter()
 
@@ -22,6 +22,7 @@ async def inpaint_image(
     Response:
         An ImagesResponse object containing a list of filenames and an information message.
     """
+    service: InpaintService = InpaintService()
     filenames = service.generate_filenames(params)
 
     background_tasks.add_task(service.process, params, filenames)

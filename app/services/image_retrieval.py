@@ -5,12 +5,11 @@ from fastapi.responses import FileResponse
 
 from app.core.config import settings
 from app.schemas.image_retrieval import ImageProgress
-
-progress: dict[str, float] = {}
+from app.services.base import image_generation_progress
 
 
 class ImageRetrievalService:
-    async def get_image_progress(self, filename: str):
+    async def get_image_progress(self, filename: str) -> ImageProgress | FileResponse:
         """
         Get image generation progress for the given filename.
 
@@ -22,13 +21,15 @@ class ImageRetrievalService:
         Returns:
             ImageProgress: An instance of the ImageProgress schema with the filename and progress.
         """
-        if filename not in progress:
+        if filename not in image_generation_progress:
             return await self.get_image(filename)
 
-        return ImageProgress(filename=filename, progress=f"{progress[filename]:.0f}%")
+        return ImageProgress(
+            filename=filename, progress=f"{image_generation_progress[filename]:.0f}%"
+        )
 
     @staticmethod
-    async def get_image(filename: str):
+    async def get_image(filename: str) -> FileResponse:
         """
         Retrieve an image by filename from the output folder.
 
@@ -50,5 +51,18 @@ class ImageRetrievalService:
 
         return FileResponse(os.path.join(settings.OUTPUT_FOLDER, filename))
 
+    @staticmethod
+    async def get_list_of_filenames() -> list[str]:
+        """
+        Lists all generated images in the output directory.
 
-image_retrieval_service = ImageRetrievalService()
+        Returns:
+            list of image filenames
+        """
+        os.makedirs(settings.OUTPUT_FOLDER, exist_ok=True)
+        files = [
+            filename
+            for filename in os.listdir(settings.OUTPUT_FOLDER)
+            if filename.endswith(".png")
+        ]
+        return files
